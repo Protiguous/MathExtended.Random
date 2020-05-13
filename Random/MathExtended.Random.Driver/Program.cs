@@ -4,11 +4,6 @@ namespace MathExtended.Random.Driver
 {
     class Program
     {
-        static void Demo()
-        {
-
-        }
-
         static void Main(string[] args)
         {
             int factor = 4096 * 4096;

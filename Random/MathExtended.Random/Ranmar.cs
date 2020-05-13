@@ -60,25 +60,115 @@ namespace MathExtended.Random
             Initialize(random.Next(MaxSeed1), random.Next(MaxSeed2));
         }
 
+        /// <summary>
+        /// Generates nonnegative random number between 0 and MaxRandom.
+        /// </summary>
+        /// <returns>Nonnegative Integer number</returns>
+        /// <example>
+        /// <code>
+        /// var random = new Ranmar();
+        /// int generatedRandomNumber = ranmar.Next();
+        /// Console.WriteLine(generatedRandomNumber);
+        /// </code>
+        /// </example>
         public int Next()
         {
             return Next(0, MaxRandom);
         }
 
+        /// <summary>
+        /// Generates Random Integer between 0 and value specified in maxValue parameter.
+        /// </summary>
+        /// <returns>Nonnegative Integer number</returns>
+        /// <example>
+        /// <code>
+        /// var random = new Ranmar();
+        /// int generatedRandomNumber = ranmar.Next(1000);
+        /// Console.WriteLine(generatedRandomNumber);
+        /// </code>
+        /// </example>
         public int Next(int maxValue)
         {
             return Next(0, maxValue);
         }
 
+        /// <summary>
+        /// Generates Random Integer between values specified in minValue and maxValue parameters.
+        /// </summary>
+        /// <returns>Integer number</returns>
+        /// <example>
+        /// <code>
+        /// var random = new Ranmar();
+        /// int generatedRandomNumber = ranmar.Next(-1000, 1000);
+        /// Console.WriteLine(generatedRandomNumber);
+        /// </code>
+        /// </example>
         public int Next(int minValue, int maxValue)
         {
             double range = maxValue - minValue;
             return (int)(Generate() * range + minValue);
         }
 
+        /// <summary>
+        /// Generates Random Real value between 0.0 and 1.0.
+        /// </summary>
+        /// <returns>Real number</returns>
+        /// <example>
+        /// <code>
+        /// var random = new Ranmar();
+        /// double generatedRandomNumber = ranmar.NextDouble();
+        /// Console.WriteLine(generatedRandomNumber);
+        /// </code>
+        /// </example>
         public double NextDouble()
         {
             return Generate();
+        }
+
+        /// <summary>
+        /// Generates Random Byte values in Array.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// var random = new Ranmar();
+        /// byte[] randomValues = new byte[10];
+        /// ranmar.NextBytes(randomValues);
+        /// </code>
+        /// </example>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when buffer parameter is not defined of zero length.</exception>
+        public void NextBytes(byte[] buffer)
+        {
+            if (buffer is null || buffer.Length == 0) throw new ArgumentOutOfRangeException("buffer", "Buffer must be defined.");
+            for(int i = 0; i < buffer.Length; i++)
+            {
+                buffer[i] = (byte)(Generate() * 255);
+            }
+        }
+
+        /// <summary>
+        /// Generates Non-zero Random Byte values in Array.
+        /// </summary>
+        /// <example>
+        /// <code>
+        /// var random = new Ranmar();
+        /// byte[] randomValues = new byte[10];
+        /// ranmar.NextNonZeroBytes(randomValues);
+        /// </code>
+        /// </example>
+        /// <exception cref="System.ArgumentOutOfRangeException">Thrown when buffer parameter is not defined of zero length.</exception>
+        public void NextNonZeroBytes(byte[] buffer)
+        {
+            if (buffer is null || buffer.Length == 0) throw new ArgumentOutOfRangeException("buffer", "Buffer must be defined.");
+
+            int position = 0;
+            do
+            {
+                byte generatedByte = (byte)(Generate() * 255);
+                if (generatedByte != 0)
+                {
+                    buffer[position++] = generatedByte;
+                }
+            } while (position < buffer.Length);
         }
 
         private double Generate()
